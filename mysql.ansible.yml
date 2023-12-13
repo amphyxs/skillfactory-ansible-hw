@@ -1,0 +1,13 @@
+---
+- name: Run MySQL server
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: "Run MySQL server"
+      register: out
+      ansible.builtin.service:
+        name: mysqld
+        state: started
+    - name: "Show debug output after start attempt"
+      ansible.builtin.debug:
+        msg: "{{ out }}"

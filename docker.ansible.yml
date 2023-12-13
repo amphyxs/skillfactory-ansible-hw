@@ -1,0 +1,28 @@
+---
+- name: "Install Docker and run example container"
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: "Install Docker on Fedora"
+      become: true
+      become_user: root
+      ansible.builtin.dnf:
+        name: 'https://download.docker.com/linux/fedora/38/x86_64/stable/Packages/docker-ce-cli-24.0.7-1.fc38.x86_64.rpm'
+        state: present
+    - name: "Start Docker daemon"
+      become: true
+      become_user: root
+      ansible.builtin.service:
+        name: docker
+        state: started
+    - name: "Run example Docker image"
+      become: true
+      become_user: root
+      register: docker_container_output
+      community.docker.docker_container:
+        name: example
+        image: hello-world
+        state: started
+    - name: "Show debug output for container"
+      ansible.builtin.debug:
+        msg: "{{ docker_container_output }}"
