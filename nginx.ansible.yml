@@ -1,0 +1,33 @@
+---
+- name: Install nginx and run sample webserver
+  hosts: localhost
+  gather_facts: true
+  tasks:
+    - name: Install nginx on Fedora
+      become: true
+      become_user: root
+      ansible.builtin.dnf:
+        name: 'nginx'
+        state: present
+    - name: Edit template file for index.html
+      become: true
+      become_user: root
+      ansible.builtin.template:
+        mode: '0644'
+        src: './templates/index.j2'
+        dest: '/usr/share/nginx/html/index.html'
+    - name: Edit template file for nginx.conf
+      become: true
+      become_user: root
+      vars:
+        port: 93
+      ansible.builtin.template:
+        mode: '0644'
+        src: './templates/nginx.conf.j2'
+        dest: '/etc/nginx/nginx.conf'
+    - name: Start nginx
+      become: true
+      become_user: root
+      changed_when: false
+      ansible.builtin.command:
+        cmd: nginx -s reload

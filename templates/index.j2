@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test nginx with Ansible</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+</head>
+<body>
+  <h1>Hello from nginx installed via Ansible</h1>
+  <p>Current RAM: {{ ansible_facts.memory_mb.real.free }} Mbytes free of {{ ansible_facts.memory_mb.real.total }} Mbytes total </p>
+</body>
+</html>
